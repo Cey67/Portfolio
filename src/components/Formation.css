@@ -1,0 +1,160 @@
+.formation {
+  background-color: var(--bg-primary);
+  padding: 80px 20px;
+  position: relative;
+}
+
+.formation-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.formation-list {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.formation-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  padding: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+[data-theme='light'] .formation-card {
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow);
+  background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+}
+
+.formation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
+}
+
+[data-theme='light'] .formation-card:hover {
+  border-width: 2px;
+  box-shadow: var(--shadow-lg);
+}
+
+.formation-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.formation-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.formation-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.formation-institution {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin: 0;
+}
+
+.formation-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.formation-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.formation-detail svg {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.formation-description {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0.5rem 0;
+}
+
+.formation-more-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.formation-more-btn:hover {
+  color: var(--primary-dark);
+  gap: 0.75rem;
+}
+
+.formation-more-btn svg {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.formation-more-btn:hover svg {
+  transform: translateY(3px);
+}
+
+@media (max-width: 768px) {
+  .formation-card {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .formation-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .formation-title {
+    font-size: 1.3rem;
+  }
+
+  .formation-details {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
