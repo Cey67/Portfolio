@@ -1,0 +1,501 @@
+.about {
+  background-color: var(--bg-secondary);
+  /* Optimisation : utiliser content-visibility pour améliorer le rendu initial */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+  /* Forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-main-layout {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+  /* Optimisation : isoler les recalculs de cette section */
+  contain: layout style;
+  /* Forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.about-photo-container {
+  flex: 0 0 400px;
+}
+
+.about-tabs-container {
+  flex: 1;
+  margin-top: 0;
+}
+
+/* Photo avec effet hover */
+.about-photo-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px var(--gold-rgba-light);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  contain: layout style paint; /* Optimisation : isole les recalculs */
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.about-photo-container:hover {
+  will-change: transform; /* Optimisation : activer uniquement au hover */
+}
+
+.about-photo-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 70px var(--gold-rgba-medium);
+}
+
+.about-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
+  border: 3px solid var(--primary-color);
+  transition: filter 0.3s ease, transform 0.3s ease;
+  /* Optimisation : forcer l'accélération GPU et optimiser le rendu */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* Lazy loading natif si supporté */
+  loading: lazy;
+}
+
+.about-photo-container:hover .about-photo {
+  /* Réduction du blur pour meilleures performances (blur est très coûteux) */
+  filter: blur(2px) brightness(0.9);
+  transform: scale(1.02);
+  /* Optimisation : utiliser will-change uniquement au hover */
+  will-change: filter, transform;
+}
+
+.photo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  border-radius: 20px;
+  /* Optimisation : utiliser opacity transition au lieu d'animation */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Optimisation : isoler les recalculs */
+  contain: layout style paint;
+}
+
+/* Animation uniquement si l'utilisateur n'a pas désactivé les animations */
+@media (prefers-reduced-motion: no-preference) {
+  .photo-overlay {
+    animation: fadeIn 0.3s ease;
+  }
+}
+
+.photo-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  min-height: 100%;
+}
+
+.photo-name-role {
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.photo-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.photo-role {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.photo-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.photo-detail-card {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border: 1px solid var(--gold-rgba-light);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.photo-detail-card:hover {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: var(--gold-rgba-strong);
+}
+
+.photo-detail-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.photo-detail-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.photo-social-icons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.photo-social-icons a {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--gold-rgba-light);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
+}
+
+.photo-social-icons a:hover {
+  background: var(--gold-rgba-weak);
+  border-color: var(--gold-rgba-very-strong);
+  transform: translateY(-2px);
+}
+
+/* Onglets */
+.about-tabs-container {
+  background: var(--card-bg);
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* Optimisation : isoler les recalculs */
+  contain: layout style paint;
+  /* Forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+[data-theme='light'] .about-tabs-container {
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow);
+  background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+}
+
+.tabs-header {
+  display: flex;
+  border-bottom: 2px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 1.25rem 2rem;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: color 0.3s ease, background 0.3s ease, border-bottom-color 0.3s ease;
+  position: relative;
+}
+
+.tab-btn:hover {
+  color: var(--primary-color);
+  background: var(--gold-rgba-very-weak);
+}
+
+.tab-btn.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  background: transparent;
+}
+
+.tabs-content {
+  padding: 2rem;
+  min-height: auto;
+  background: var(--card-bg);
+}
+
+.tab-panel {
+  /* Optimisation : utiliser opacity au lieu d'animation pour meilleures performances */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  /* Optimisation : isoler les recalculs */
+  contain: layout style;
+}
+
+/* Animation uniquement si l'utilisateur n'a pas désactivé les animations */
+@media (prefers-reduced-motion: no-preference) {
+  .tab-panel {
+    animation: fadeIn 0.3s ease;
+  }
+}
+
+.panel-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.panel-subtitle {
+  font-size: 1.2rem;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.panel-description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+}
+
+.panel-description:last-of-type {
+  margin-bottom: 0;
+}
+
+.profile-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.info-item {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+[data-theme='light'] .info-item {
+  border: 2px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(139, 111, 71, 0.1);
+  background: #ffffff;
+}
+
+.info-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Compétences avec tags colorés - Style inspiré du deuxième screen */
+.skills-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.skill-category {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.category-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.skill-tag {
+  padding: 0.45rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: default;
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.skill-tag:hover::before {
+  left: 100%;
+}
+
+.skill-tag:hover {
+  transform: translateY(-3px) scale(1.05);
+  filter: brightness(1.15);
+}
+
+/* Bulles avec dégradés pour chaque catégorie - Style inspiré de l'image */
+.skill-tag-langages-de-programmation {
+  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.skill-tag-langages-de-programmation:hover {
+  background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%) !important;
+  box-shadow: none !important;
+}
+
+.skill-tag-frameworks-librairies {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.skill-tag-frameworks-librairies:hover {
+  background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #3b82f6 100%) !important;
+  box-shadow: none !important;
+}
+
+.skill-tag-bases-de-donnees,
+.skill-tag-bases-de-donnes {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.skill-tag-bases-de-donnees:hover,
+.skill-tag-bases-de-donnes:hover {
+  background: linear-gradient(135deg, #6ee7b7 0%, #34d399 50%, #10b981 100%) !important;
+  box-shadow: none !important;
+}
+
+.skill-tag-autres-competences {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #dc2626 100%) !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+.skill-tag-autres-competences:hover {
+  background: linear-gradient(135deg, #fca5a5 0%, #f87171 50%, #ef4444 100%) !important;
+  box-shadow: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .about-main-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .about-photo-container {
+    max-width: 350px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-main-layout {
+    gap: 2rem;
+  }
+
+  .tabs-content {
+    padding: 1.5rem;
+  }
+
+  .profile-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-title {
+    font-size: 1.5rem;
+  }
+
+  .panel-description {
+    font-size: 1rem;
+  }
+}

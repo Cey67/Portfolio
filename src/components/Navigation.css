@@ -1,0 +1,262 @@
+.navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: transparent;
+  /* Optimisation : transitions uniquement sur les propriétés GPU-accelerated */
+  transition: background-color 0.2s ease, padding 0.2s ease;
+  padding: 20px 0;
+  contain: layout style paint; /* Optimisation : isole les recalculs de cette section */
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Optimisation : utiliser will-change uniquement quand nécessaire */
+  will-change: background-color, padding;
+}
+
+.navigation.scrolled {
+  background-color: var(--card-bg);
+  /* DÉSACTIVATION du backdrop-filter pour meilleures performances (très coûteux) */
+  /* backdrop-filter: blur(8px); */
+  /* -webkit-backdrop-filter: blur(8px); */
+  box-shadow: var(--shadow);
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+  /* Optimisation : utiliser will-change uniquement quand scrolled */
+  will-change: auto;
+}
+
+/* Optionnel : réactiver backdrop-filter uniquement sur les appareils très performants */
+@media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
+  .navigation.scrolled {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
+[data-theme='light'] .navigation.scrolled {
+  border-bottom: 2px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.15), 0 2px 4px rgba(139, 111, 71, 0.1);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.nav-logo:hover {
+  will-change: transform; /* Activer uniquement au hover */
+}
+
+.logo-cs {
+  width: 40px;
+  height: 40px;
+  /* Optimisation : simplification des filtres (drop-shadow multiples sont très coûteux) */
+  filter: drop-shadow(0 0 6px var(--gold-rgba-strong));
+  transition: filter 0.2s ease, transform 0.2s ease;
+  object-fit: contain;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+[data-theme='light'] .logo-cs {
+  /* Optimisation : simplification des filtres */
+  filter: drop-shadow(0 0 6px var(--gold-rgba-strong));
+}
+
+.nav-logo:hover {
+  transform: scale(1.05);
+}
+
+.nav-logo:hover .logo-cs {
+  /* Optimisation : simplification des filtres au hover */
+  filter: drop-shadow(0 0 10px var(--gold-rgba-very-strong));
+  will-change: filter; /* Activer uniquement au hover */
+}
+
+[data-theme='light'] .nav-logo:hover .logo-cs {
+  /* Optimisation : simplification des filtres au hover */
+  filter: drop-shadow(0 0 10px var(--gold-rgba-very-strong));
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-menu li button {
+  background: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.nav-menu li button:hover {
+  will-change: color; /* Activer uniquement au hover */
+}
+
+.nav-menu li button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: width 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.nav-menu li button:hover {
+  color: var(--primary-color);
+}
+
+.nav-menu li button:hover::after {
+  width: 100%;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  padding: 5px;
+}
+
+.mobile-menu-toggle span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-primary);
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+  border-radius: 2px;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.theme-toggle {
+  background: var(--gradient-primary);
+  color: var(--white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow);
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.theme-toggle:hover {
+  will-change: transform; /* Activer uniquement au hover */
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: var(--shadow-lg);
+}
+
+.nav-menu-mobile {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  background-color: var(--card-bg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  gap: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+[data-theme='light'] .nav-menu-mobile {
+  border-top: 2px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.15);
+  background: #ffffff;
+}
+
+.nav-menu-mobile li button {
+  background: none;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.nav-menu-mobile li button:hover {
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+}
+
+.theme-toggle-mobile {
+  background: var(--gradient-primary);
+  color: var(--white);
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .nav-menu-mobile {
+    display: flex;
+  }
+}
+
