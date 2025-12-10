@@ -22,7 +22,7 @@ const Skills = () => {
     { 
       name: 'HTML/CSS', 
       category: 'Développement Web', 
-      level: 90,
+      level: 95,
       logo: HtmlCssLogo
     },
     { 
@@ -34,43 +34,43 @@ const Skills = () => {
     { 
       name: 'React', 
       category: 'Développement Web', 
-      level: 80,
+      level: 70,
       logo: ReactLogo
     },
     { 
       name: 'Node.js', 
       category: 'Développement Web', 
-      level: 75,
+      level: 70,
       logo: NodeLogo
     },
     { 
       name: 'Python', 
       category: 'Langages de Programmation', 
-      level: 70,
+      level: 65,
       logo: PythonLogo
     },
     { 
       name: 'PHP', 
       category: 'Langages de Programmation', 
-      level: 75,
+      level: 60,
       logo: PhpLogo
     },
     { 
       name: 'Java', 
       category: 'Langages de Programmation', 
-      level: 70,
+      level: 65,
       logo: JavaLogo
     },
     { 
       name: 'C#', 
       category: 'Langages de Programmation', 
-      level: 65,
+      level: 85,
       logo: CsharpLogo
     },
     { 
       name: 'Git', 
       category: 'Outils', 
-      level: 85,
+      level: 70,
       logo: GitLogo
     },
     { 
@@ -82,7 +82,7 @@ const Skills = () => {
     { 
       name: 'PostgreSQL', 
       category: 'Bases de Données', 
-      level: 75,
+      level: 70,
       logo: PostgreSqlLogo
     },
     { 

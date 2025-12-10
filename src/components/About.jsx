@@ -33,7 +33,13 @@ const About = () => {
               onMouseEnter={() => setShowInfo(true)}
               onMouseLeave={() => setShowInfo(false)}
             >
-              <img src={photo} alt="Ceyhun SAPMAZ" className="about-photo" />
+              <img 
+                src={photo} 
+                alt="Ceyhun SAPMAZ" 
+                className="about-photo"
+                loading="lazy"
+                decoding="async"
+              />
               {showInfo && (
                 <div className="photo-overlay">
                   <div className="photo-info">

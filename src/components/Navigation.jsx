@@ -10,11 +10,35 @@ const Navigation = () => {
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+    let lastIsScrolled = false;
+
+    /**
+     * Gestionnaire de scroll ultra-optimisé
+     * Évite les re-renders inutiles en ne mettant à jour que si l'état change vraiment
+     */
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      lastScrollY = window.scrollY;
+      const newIsScrolled = lastScrollY > 50;
+      
+      // Optimisation : ne mettre à jour que si l'état change vraiment
+      if (newIsScrolled === lastIsScrolled) {
+        return;
+      }
+      
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          lastIsScrolled = newIsScrolled;
+          setIsScrolled(newIsScrolled);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Utilisation de { passive: true } pour améliorer les performances de scroll
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

@@ -5,16 +5,35 @@
   right: 0;
   z-index: 1000;
   background-color: transparent;
-  transition: all 0.3s ease;
+  /* Optimisation : transitions uniquement sur les propriétés GPU-accelerated */
+  transition: background-color 0.2s ease, padding 0.2s ease;
   padding: 20px 0;
+  contain: layout style paint; /* Optimisation : isole les recalculs de cette section */
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Optimisation : utiliser will-change uniquement quand nécessaire */
+  will-change: background-color, padding;
 }
 
 .navigation.scrolled {
   background-color: var(--card-bg);
-  backdrop-filter: blur(10px);
+  /* DÉSACTIVATION du backdrop-filter pour meilleures performances (très coûteux) */
+  /* backdrop-filter: blur(8px); */
+  /* -webkit-backdrop-filter: blur(8px); */
   box-shadow: var(--shadow);
   padding: 15px 0;
   border-bottom: 1px solid var(--border-color);
+  /* Optimisation : utiliser will-change uniquement quand scrolled */
+  will-change: auto;
+}
+
+/* Optionnel : réactiver backdrop-filter uniquement sur les appareils très performants */
+@media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
+  .navigation.scrolled {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
 }
 
 [data-theme='light'] .navigation.scrolled {
@@ -43,29 +62,31 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.nav-logo:hover {
+  will-change: transform; /* Activer uniquement au hover */
 }
 
 .logo-cs {
   width: 40px;
   height: 40px;
-  filter: 
-    drop-shadow(0 0 8px var(--gold-rgba-strong))
-    drop-shadow(0 0 4px var(--gold-secondary-rgba))
-    brightness(1.15)
-    saturate(1.2)
-    contrast(1.1);
-  transition: all 0.3s ease;
+  /* Optimisation : simplification des filtres (drop-shadow multiples sont très coûteux) */
+  filter: drop-shadow(0 0 6px var(--gold-rgba-strong));
+  transition: filter 0.2s ease, transform 0.2s ease;
   object-fit: contain;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 [data-theme='light'] .logo-cs {
-  filter: 
-    drop-shadow(0 0 8px var(--gold-rgba-strong))
-    drop-shadow(0 0 4px var(--gold-secondary-rgba))
-    brightness(1.05)
-    saturate(1.3)
-    contrast(1.2);
+  /* Optimisation : simplification des filtres */
+  filter: drop-shadow(0 0 6px var(--gold-rgba-strong));
 }
 
 .nav-logo:hover {
@@ -73,21 +94,14 @@
 }
 
 .nav-logo:hover .logo-cs {
-  filter: 
-    drop-shadow(0 0 15px var(--gold-rgba-very-strong))
-    drop-shadow(0 0 8px var(--gold-secondary-rgba-strong))
-    brightness(1.3)
-    saturate(1.3)
-    contrast(1.15);
+  /* Optimisation : simplification des filtres au hover */
+  filter: drop-shadow(0 0 10px var(--gold-rgba-very-strong));
+  will-change: filter; /* Activer uniquement au hover */
 }
 
 [data-theme='light'] .nav-logo:hover .logo-cs {
-  filter: 
-    drop-shadow(0 0 15px var(--gold-rgba-very-strong))
-    drop-shadow(0 0 8px var(--gold-secondary-rgba-strong))
-    brightness(1.1)
-    saturate(1.4)
-    contrast(1.25);
+  /* Optimisation : simplification des filtres au hover */
+  filter: drop-shadow(0 0 10px var(--gold-rgba-very-strong));
 }
 
 .nav-right {
@@ -109,7 +123,14 @@
   font-weight: 500;
   padding: 8px 0;
   position: relative;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.nav-menu li button:hover {
+  will-change: color; /* Activer uniquement au hover */
 }
 
 .nav-menu li button::after {
@@ -120,7 +141,10 @@
   width: 0;
   height: 2px;
   background-color: var(--primary-color);
-  transition: width 0.3s ease;
+  transition: width 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .nav-menu li button:hover {
@@ -143,8 +167,11 @@
   width: 25px;
   height: 3px;
   background-color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
   border-radius: 2px;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .theme-toggle {
@@ -157,8 +184,15 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: var(--shadow);
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.theme-toggle:hover {
+  will-change: transform; /* Activer uniquement au hover */
 }
 
 .theme-toggle:hover {
@@ -191,10 +225,13 @@
   text-align: left;
   padding: 10px;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .nav-menu-mobile li button:hover {

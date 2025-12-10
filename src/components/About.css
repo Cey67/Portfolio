@@ -1,5 +1,11 @@
 .about {
   background-color: var(--bg-secondary);
+  /* Optimisation : utiliser content-visibility pour améliorer le rendu initial */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+  /* Forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .about-content {
@@ -11,6 +17,11 @@
   display: flex;
   gap: 4rem;
   align-items: flex-start;
+  /* Optimisation : isoler les recalculs de cette section */
+  contain: layout style;
+  /* Forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .about-photo-container {
@@ -31,6 +42,14 @@
   overflow: hidden;
   box-shadow: 0 20px 60px var(--gold-rgba-light);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  contain: layout style paint; /* Optimisation : isole les recalculs */
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.about-photo-container:hover {
+  will-change: transform; /* Optimisation : activer uniquement au hover */
 }
 
 .about-photo-container:hover {
@@ -45,11 +64,21 @@
   border-radius: 20px;
   border: 3px solid var(--primary-color);
   transition: filter 0.3s ease, transform 0.3s ease;
+  /* Optimisation : forcer l'accélération GPU et optimiser le rendu */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* Lazy loading natif si supporté */
+  loading: lazy;
 }
 
 .about-photo-container:hover .about-photo {
-  filter: blur(5px);
+  /* Réduction du blur pour meilleures performances (blur est très coûteux) */
+  filter: blur(2px) brightness(0.9);
   transform: scale(1.02);
+  /* Optimisation : utiliser will-change uniquement au hover */
+  will-change: filter, transform;
 }
 
 .photo-overlay {
@@ -64,7 +93,21 @@
   justify-content: flex-end;
   padding: 1.5rem;
   border-radius: 20px;
-  animation: fadeIn 0.3s ease;
+  /* Optimisation : utiliser opacity transition au lieu d'animation */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Optimisation : isoler les recalculs */
+  contain: layout style paint;
+}
+
+/* Animation uniquement si l'utilisateur n'a pas désactivé les animations */
+@media (prefers-reduced-motion: no-preference) {
+  .photo-overlay {
+    animation: fadeIn 0.3s ease;
+  }
 }
 
 .photo-info {
@@ -104,14 +147,15 @@
 
 .photo-detail-card {
   background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   padding: 0.9rem 1rem;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   border: 1px solid var(--gold-rgba-light);
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .photo-detail-card:hover {
@@ -145,12 +189,14 @@
   align-items: center;
   justify-content: center;
   background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--gold-rgba-light);
   border-radius: 8px;
   color: #ffffff;
   font-size: 1.2rem;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
 }
 
 .photo-social-icons a:hover {
@@ -165,7 +211,13 @@
   border-radius: 20px;
   border: 1px solid var(--border-color);
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* Optimisation : isoler les recalculs */
+  contain: layout style paint;
+  /* Forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 [data-theme='light'] .about-tabs-container {
@@ -190,7 +242,7 @@
   border: none;
   border-bottom: 3px solid transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, background 0.3s ease, border-bottom-color 0.3s ease;
   position: relative;
 }
 
@@ -212,7 +264,18 @@
 }
 
 .tab-panel {
-  animation: fadeIn 0.3s ease;
+  /* Optimisation : utiliser opacity au lieu d'animation pour meilleures performances */
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  /* Optimisation : isoler les recalculs */
+  contain: layout style;
+}
+
+/* Animation uniquement si l'utilisateur n'a pas désactivé les animations */
+@media (prefers-reduced-motion: no-preference) {
+  .tab-panel {
+    animation: fadeIn 0.3s ease;
+  }
 }
 
 .panel-title {

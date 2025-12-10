@@ -51,7 +51,13 @@ const Hero = () => {
         </div>
         <div className="hero-image fade-in">
           <div className="hero-photo-container">
-            <img src={photo} alt="Ceyhun" className="hero-photo" />
+            <img 
+              src={photo} 
+              alt="Ceyhun" 
+              className="hero-photo"
+              loading="eager"
+              fetchPriority="high"
+            />
           </div>
         </div>
       </div>

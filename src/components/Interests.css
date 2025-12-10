@@ -18,7 +18,14 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 200% auto;
-  animation: gradient-shift 3s ease infinite;
+  will-change: background-position;
+}
+
+/* Animation uniquement si l'utilisateur n'a pas désactivé les animations */
+@media (prefers-reduced-motion: no-preference) {
+  .interests-title {
+    animation: gradient-shift 3s ease infinite;
+  }
 }
 
 .title-start,
@@ -48,9 +55,11 @@
   border-radius: 15px;
   padding: 2rem;
   border: 2px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   position: relative;
   box-shadow: var(--shadow);
+  contain: layout style paint; /* Optimisation : isole les recalculs */
+  will-change: transform;
 }
 
 [data-theme='light'] .interest-card {
@@ -113,7 +122,7 @@
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .interest-card-teal .interest-link {

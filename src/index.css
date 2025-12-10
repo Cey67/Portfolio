@@ -75,6 +75,15 @@
 
 html {
   scroll-behavior: smooth;
+  /* Optimisation : améliorer les performances de scroll */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimisation : utiliser will-change uniquement pendant le scroll actif */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -86,7 +95,23 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Optimisation : transition uniquement sur la couleur du texte, pas sur le background */
+  transition: color 0.3s ease;
+  /* Optimisation : forcer l'accélération GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Optimisation globale : désactiver les animations si l'utilisateur préfère les réduire */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 a {
@@ -103,6 +128,11 @@ button {
 
 section {
   padding: 80px 20px;
+  /* Optimisation : forcer l'accélération GPU pour toutes les sections */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Optimisation : isoler les recalculs de chaque section */
+  contain: layout style;
 }
 
 .container {
@@ -142,7 +172,14 @@ section {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 200% auto;
-  animation: gradient-shift 3s ease infinite;
+  will-change: background-position; /* Optimisation pour le navigateur - indique que cette propriété va changer */
+}
+
+/* Animation uniquement si l'utilisateur n'a pas désactivé les animations */
+@media (prefers-reduced-motion: no-preference) {
+  .section-title {
+    animation: gradient-shift 3s ease infinite;
+  }
 }
 
 @keyframes gradient-shift {
